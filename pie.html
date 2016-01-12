@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Charts - Pie Chart</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/Chart.css">
+		<script src="Js/jquery-1.11.3.min.js"></script>
+		<script src="Js/Chart.js"></script>
+		<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+		<script>
+		var key = window.location.search.substring(1).split("=")[1];
+		</script>
+
+	</head>
+	<body>
+		<div id="content">
+			<div><a class="btn btn-default btn-lg" href="list_polls.html"><span class="network-name">Back</span></a></div>
+		<h3 id="content"> Poll Pie-Chart</h3>
+		<canvas id="mycanvas" width="300" height="300"></canvas>
+		<script>
+			var ref = new Firebase('https://resplendent-fire-6177.firebaseio.com');
+			$(document).ready(function(){
+				var ctx = $("#mycanvas").get(0).getContext("2d");
+				// pie chart data
+				// sumof values =360
+				var val1,val2,val3,val4,lab1,lab2,lab3,lab4;
+				var data;
+            		ref.child("Polls").child(key).once("value", function(snapshot){
+
+            			var iterateValue = 0;
+						for(var keyz in snapshot.val()){
+							if(iterateValue === 0){
+								lab1 = keyz;
+								val1 = snapshot.val()[keyz];
+							} else if (iterateValue === 1){
+								lab2 = keyz;
+								val2 = snapshot.val()[keyz];
+							} else if(iterateValue === 2){
+								lab3 = keyz;
+								val3 = snapshot.val()[keyz];
+							} else if(iterateValue === 3){
+								lab4 = keyz;
+								val4 = snapshot.val()[keyz];
+							}
+							iterateValue++;
+						}  
+						data = [
+					{
+						value: val1,
+						color: "cornflowerblue",
+						highlight: "blue",
+						label: lab1
+					},
+					{
+						value: val2,
+						color: "lightgreen",
+						highlight: "yellowgreen",
+						label: lab2
+					},
+					{
+						value: val3,
+						color: "orange",
+						highlight: "darkorange",
+						label: lab3
+					},
+					{
+						value: val4,
+						color: "pink",
+						highlight: "deeppink",
+						label: lab4
+					},
+				];
+
+				var piechart = new Chart(ctx).Pie(data);
+
+
+            	});	
+				 
+				//draw
+			});
+		</script>
+	</div>
+		<div id="content">
+		<h3 id="content"> Poll Bar-Chart</h3>
+		<canvas id="mycanvas1" width="300" height="400"></canvas>
+		<script>
+			$(document).ready(function(){
+	ref.child("Polls").child(key).once("value", function(snapshot){
+
+            			var iterateValue = 0;
+						for(var keyz in snapshot.val()){
+							if(iterateValue === 0){
+								lab1 = keyz;
+								val1 = snapshot.val()[keyz];
+							} else if (iterateValue === 1){
+								lab2 = keyz;
+								val2 = snapshot.val()[keyz];
+							} else if(iterateValue === 2){
+								lab3 = keyz;
+								val3 = snapshot.val()[keyz];
+							} else if(iterateValue === 3){
+								lab4 = keyz;
+								val4 = snapshot.val()[keyz];
+							}
+							iterateValue++;
+						}  			 
+				var ctx = $("#mycanvas1").get(0).getContext("2d");
+				// pie chart data
+				// sumof values =360
+				var data = {
+			    labels: [lab1, lab2, lab3, lab4,],
+			    datasets: [
+			        {
+			            fillColor: "rgba(151,187,205,0.5)",
+			            strokeColor: "rgba(151,187,205,0.8)",
+			            highlightFill: "rgba(151,187,205,0.75)",
+			            highlightStroke: "rgba(151,187,205,1)",
+			            data: [val1, val2, val3, val4]
+			        }
+			    ]
+			};
+				//draw
+				var piechart = new Chart(ctx).Bar(data);
+			});			
+			});
+		</script>
+	</div>
+	
+
+		</body>
+</html>
